@@ -46,6 +46,24 @@
     (is (= (get-next-player game) :player2))
     (is (= (get-next-player (set-next-player :player1 game)) :player1))))
 
+(deftest test-relinquish-turn-unwon-game
+  "Expects :player1 to relinquish to :player2."
+  (let [game0 (reset-game)
+        game1 (relinquish-turn game0)]
+    (is (= (get-next-player game0) default-starting-player))
+    (is (= (get-next-player game1) (choose-next-turn-taker default-starting-player)))))
+
+(deftest test-relinquish-turn-won-game
+  "Expects :player2 as winner will remain as next-player."
+  (let [expected-winner (choose-next-turn-taker default-starting-player)
+        game0 (reset-game)
+        game1 (set-next-player expected-winner (set-remaining-tokens 0 game0))]
+    (is (= (get-next-player game0) default-starting-player))
+    (is (= (get-remaining-tokens game0) default-number-of-tokens))
+    (is (= (get-next-player game1) expected-winner))
+    (is (= (get-remaining-tokens game1) 0))
+    (is (= (get-next-player (relinquish-turn game1)) expected-winner))))
+
 (deftest test-take-valid-tokens
   "Expects valid move"
   (let [tokens-taken 3
