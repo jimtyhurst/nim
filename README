@@ -1,0 +1,16 @@
+# nim
+
+Nim is a game played by two people, who take turns selecting tokens from a board. The player who picks up the last token wins.
+
+This implementation was written as an exercise while learning Clojure.
+
+## Usage
+
+(reset) ;Initializes board to default preferences.
+(take number-of-tokens) ;Player takes turn by taking number-of-tokens
+
+## License
+
+Copyright (c) 2010 Jim Tyhurst
+
+Distributed under the Eclipse Public License, the same as Clojure.
