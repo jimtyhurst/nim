@@ -64,10 +64,10 @@
     (is (= (get-remaining-tokens game1) 0))
     (is (= (get-next-player (relinquish-turn game1)) expected-winner))))
 
-(deftest test-take-valid-tokens
+(deftest test-remove-valid-tokens
   "Expects valid move"
   (let [tokens-taken 3
-        game (take-tokens tokens-taken (reset-game))]
+        game (remove-tokens tokens-taken (reset-game))]
     (is (== (get-remaining-tokens game) (- default-number-of-tokens tokens-taken)))))
 
 (deftest test-take-turn-with-valid-tokens

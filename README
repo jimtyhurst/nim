@@ -6,8 +6,8 @@ This implementation was written as an exercise while learning Clojure.
 
 ## Usage
 
-(reset) ;Initializes board to default preferences.
-(take number-of-tokens) ;Player takes turn by taking number-of-tokens
+(start-game) ;Initializes board to default preferences.
+(take-tokens number-of-tokens) ;Player takes turn by taking number-of-tokens
 
 ## License
 

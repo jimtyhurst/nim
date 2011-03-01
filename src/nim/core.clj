@@ -72,7 +72,7 @@
     game
     (set-next-player (choose-next-turn-taker (get-next-player game)) game)))
 
-(defn take-tokens [tokens game]
+(defn remove-tokens [tokens game]
   "Returns a game board after taking the requested number of tokens from the board."
   (if (valid-move? tokens game)
     (set-remaining-tokens (- (get-remaining-tokens game) tokens) game)
@@ -81,5 +81,5 @@
 (defn take-turn [tokens game]
   "Returns game board after taking a turn with the tokens."
   (if (valid-game? game)
-    (relinquish-turn (take-tokens tokens game))
+    (relinquish-turn (remove-tokens tokens game))
     nil))
