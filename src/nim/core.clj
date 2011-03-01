@@ -6,6 +6,12 @@
 (def default-starting-player :player1)
 (def players '(:player1 :player2))
 
+(def player-names {:player1 "Player 1", :player2 "Player 2"})
+
+(defn get-player-name [game]
+  (let [player ((game :game-state) :next-player)]
+    (player-names player)))
+
 (defn get-max-tokens-to-take [game]
   "Returns preference for max tokens that may be taken in one turn in given game."
   ((game :board-preferences) :max-tokens-to-take))
