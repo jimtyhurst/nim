@@ -1,15 +1,15 @@
 (ns nim.core)
 
-                                        ;State-less logic for playing the game of Nim.
-                                        ;All of the essential state is passed in the game map.
+;; State-less logic for playing the game of Nim.
+;; All of the essential state is passed in the game map.
 
-;Default values for configuring a game.
+;; Default values for configuring a game.
 (def default-number-of-tokens 9)
 (def default-max-number-of-tokens-to-take 3)
 (def default-starting-player :player1)
 
-                                        ;TODO: players should be part of the :board-preferences, so that they
-                                        ;are part of the game state.
+;; TODO: players should be part of the :board-preferences,
+;; so they are part of the state of a game.
 (def players '(:player1 :player2))
 (def player-names {:player1 "Player 1", :player2 "Player 2"})
 
@@ -39,8 +39,8 @@
 
 (defn choose-next-turn-taker [player]
   "Returns the next player in sequence who should be given a turn to play."
-  ;FIXME: Generalize to read next player from players list, which
-  ;would allow for more than two players.
+  ;FIXME: Generalize to read next player from players list,
+  ;which would allow for more than two players.
   (if (= player :player1)
     :player2
     :player1))
@@ -48,12 +48,6 @@
 (defn completed? [game]
   "Returns true when game has reached the end state."
   (== 0 (get-remaining-tokens game)))
-
-;; (defn get-game-winner [game]
-;;   "Returns symbol for player who won the game or nil when game is not complete yet."
-;;   (if (completed? game)
-;;     (get-next-player game)
-;;     nil))
 
 (defn valid-player? [player]
   "Returns true if player is in the list of known players."

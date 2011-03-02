@@ -2,13 +2,13 @@
   (:use [nim.core] :reload)
   (:use [nim.player] :reload))
 
-                                        ;Command-line interface to the Nim game.
-                                        ;Usage:
-                                        ;  (start-game)
-                                        ;  (take-tokens number-of-tokens)
-                                        ;  (machine-takes-turn)
+;; Command-line interface to the Nim game.
+;; Usage:
+;;   (start-game)
+;;   (take-tokens number-of-tokens)
+;;   (machine-takes-turn)
 
-;Global holds the current state of the game between turns.
+;; Global holds the current state of the game between turns.
 (def persisted-game (reset-game))
 
 (defn rules []
