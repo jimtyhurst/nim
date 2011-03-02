@@ -76,13 +76,13 @@
    {:remaining-tokens number-of-tokens
     :next-player starting-player}}))
 
-(defn relinquish-turn [game]
+(defn- relinquish-turn [game]
   "Returns game with next player incremented to the next player who should have a turn to play. Note: no change occurs once the game has been won."
   (if (completed? game)
     game
     (set-next-player (choose-next-turn-taker (get-next-player game)) game)))
 
-(defn remove-tokens [tokens game]
+(defn- remove-tokens [tokens game]
   "Returns a game board after taking the requested number of tokens from the board."
   (if (valid-move? tokens game)
     (set-remaining-tokens (- (get-remaining-tokens game) tokens) game)

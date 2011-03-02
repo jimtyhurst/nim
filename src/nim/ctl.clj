@@ -26,7 +26,7 @@
        "Use (take-tokens number-of-tokens) to take a turn or "
        "use (machine-takes-turn) to let the computer calculate the move. "))
 
-(defn turn-notification [game]
+(defn- turn-notification [game]
   "Returns displayable string of whose turn it is to play next."
   (let [player-name (get-player-name game)]
     (if (completed? game)
