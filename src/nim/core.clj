@@ -1,11 +1,16 @@
 (ns nim.core)
 
+                                        ;State-less logic for playing the game of Nim.
+                                        ;All of the essential state is passed in the game map.
+
 ;Default values for configuring a game.
 (def default-number-of-tokens 9)
 (def default-max-number-of-tokens-to-take 3)
 (def default-starting-player :player1)
-(def players '(:player1 :player2))
 
+                                        ;TODO: players should be part of the :board-preferences, so that they
+                                        ;are part of the game state.
+(def players '(:player1 :player2))
 (def player-names {:player1 "Player 1", :player2 "Player 2"})
 
 (defn get-player-name [game]
@@ -34,16 +39,21 @@
 
 (defn choose-next-turn-taker [player]
   "Returns the next player in sequence who should be given a turn to play."
-  ;FIXME: Generalize to read next player from players list.
+  ;FIXME: Generalize to read next player from players list, which
+  ;would allow for more than two players.
   (if (= player :player1)
     :player2
     :player1))
 
-(defn get-game-winner [game]
-  "Returns symbol for player who won the game or nil when game is not complete yet."
-  (if (== 0 (get-remaining-tokens game))
-    (get-next-player game)
-    nil))
+(defn completed? [game]
+  "Returns true when game has reached the end state."
+  (== 0 (get-remaining-tokens game)))
+
+;; (defn get-game-winner [game]
+;;   "Returns symbol for player who won the game or nil when game is not complete yet."
+;;   (if (completed? game)
+;;     (get-next-player game)
+;;     nil))
 
 (defn valid-player? [player]
   "Returns true if player is in the list of known players."
@@ -73,8 +83,8 @@
     :next-player starting-player}}))
 
 (defn relinquish-turn [game]
-  "Returns game with next player incremented to the next player who should have a turn to play. Note: no change occurs once the game has been one."
-  (if (get-game-winner game)
+  "Returns game with next player incremented to the next player who should have a turn to play. Note: no change occurs once the game has been won."
+  (if (completed? game)
     game
     (set-next-player (choose-next-turn-taker (get-next-player game)) game)))
 
@@ -85,7 +95,7 @@
     nil))
 
 (defn take-turn [tokens game]
-  "Returns game board after taking a turn with the tokens."
+  "Returns game board after taking a turn with the requested number of tokens."
   (if (valid-game? game)
     (relinquish-turn (remove-tokens tokens game))
     nil))

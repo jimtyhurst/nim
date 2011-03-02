@@ -7,10 +7,11 @@ This implementation was written as an exercise while learning Clojure.
 ## Usage
 
 (start-game) ;Initializes board to default preferences.
-(take-tokens number-of-tokens) ;Player takes turn by taking number-of-tokens
+(take-tokens number-of-tokens) ;Player takes a turn by taking number-of-tokens
+(machine-takes-turn) ;The application makes a choice for the current turn.
 
 ## License
 
-Copyright (c) 2010 Jim Tyhurst
+Copyright (c) 2011 Jim Tyhurst
 
 Distributed under the Eclipse Public License, the same as Clojure.
