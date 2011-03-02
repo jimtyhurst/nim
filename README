@@ -6,6 +6,8 @@ This implementation was written as an exercise while learning Clojure.
 
 ## Usage
 
+In a repl:
+(use '[nim.ctl] :reload)
 (start-game) ;Initializes board to default preferences.
 (take-tokens number-of-tokens) ;Player takes a turn by taking number-of-tokens
 (machine-takes-turn) ;The application makes a choice for the current turn.
