@@ -28,7 +28,7 @@
 
 (defn- turn-notification [game]
   "Returns displayable string of whose turn it is to play next."
-  (let [player-name (get-player-name game)]
+  (let [player-name (get-next-player-name game)]
     (if (completed? game)
       (str player-name " won the game!")
       (str "It is " player-name "'s turn."))))
@@ -42,7 +42,7 @@
 
 (defn take-tokens [number-of-tokens]
   "Removes the number-of-tokens from the game board, returning a displayable string description of the game state."
-  (let [played-game (take-turn number-of-tokens persisted-game)]
+  (let [played-game (take-turn persisted-game number-of-tokens)]
     (cond (nil? played-game) (str "Illegal move")
           :else (do (def persisted-game played-game)
                     (str "You removed "
