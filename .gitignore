@@ -6,3 +6,6 @@ classes
 # Temporary files from emacs
 *#
 .#*
+
+# OS-generated files
+.DS_Store
