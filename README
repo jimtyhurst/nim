@@ -12,6 +12,8 @@ In a repl:
 (take-tokens number-of-tokens) ;Player takes a turn by taking number-of-tokens
 (machine-takes-turn) ;The application makes a choice for the current turn.
 
+Note: machine-takes-turn does an exhaustive look-ahead, evaluating all possible moves. So it selects the next move that maximizes the ratio of winning end conditions over all possible end conditions.
+
 ## License
 
 Copyright (c) 2011 Jim Tyhurst
