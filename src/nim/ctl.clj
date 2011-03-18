@@ -26,22 +26,25 @@
        "Use (take-tokens number-of-tokens) to take a turn or "
        "use (machine-takes-turn) to let the computer calculate the move. "))
 
-(defn- turn-notification [game]
+(defn- turn-notification
   "Returns displayable string of whose turn it is to play next."
+  [game]
   (let [player-name (get-next-player-name game)]
     (if (completed? game)
       (str player-name " won the game!")
       (str "It is " player-name "'s turn."))))
 
-(defn start-game []
+(defn start-game
   "Initializes game, so that user can start playing, returning a displayable string of instructions to continue playing the game."
+  []
   (def persisted-game (reset-game))
   (str (rules)
        \newline \newline
        (turn-notification persisted-game)))
 
-(defn take-tokens [number-of-tokens]
+(defn take-tokens
   "Removes the number-of-tokens from the game board, returning a displayable string description of the game state."
+  [number-of-tokens]
   (let [played-game (take-turn persisted-game number-of-tokens)]
     (cond (nil? played-game) (str "Illegal move")
           :else (do (def persisted-game played-game)
@@ -53,8 +56,9 @@
                          " tokens remaining. "
                          (turn-notification persisted-game))))))
 
-(defn machine-takes-turn []
+(defn machine-takes-turn
   "Calculates a move and removes tokens from the game board, returning a displayable string description of the game state."
+  []
   (let [previous-tokens (get-remaining-tokens persisted-game)
         played-game (auto-take-turn persisted-game)]
     (def persisted-game played-game)
@@ -65,4 +69,11 @@
          (get-remaining-tokens persisted-game)
          " tokens remaining. "
          (turn-notification persisted-game))))
+
+(defn help []
+  (str "(start-game) ;Initializes board to default preferences. "
+       \newline
+       "(take-tokens number-of-tokens) ;Player takes a turn by taking number-of-tokens. "
+       \newline
+       "(machine-takes-turn) ;The application makes a choice for the current turn."))
 

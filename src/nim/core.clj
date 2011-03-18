@@ -9,15 +9,17 @@
 (def default-players {:player1 "Player 1", :player2 "Player 2"})
 (def default-turn-taking-sequence '(:player1 :player2))
 
-(defn get-next-item-position [item all-items item-counter]
+(defn get-next-item-position
   "Returns the zero-based item-counter when item is the first element in all-items; -1 when there are no more items to match."
+  [item all-items item-counter]
   (cond (nil? all-items) -1
         (empty? all-items) -1
         (= item (first all-items)) item-counter
         :else (recur item (next all-items) (+ 1 item-counter))))
 
-(defn get-next-item [current-item all-items]
+(defn get-next-item
   "Returns the item after current-item in the list, wrapping around to the beginning if necessary."
+  [current-item all-items]
   (let [next-item-index (get-next-item-position current-item all-items 0)]
     (cond (< next-item-index 0) ;;not found
           nil
@@ -36,9 +38,11 @@
   (set-max-tokens-to-take [this number-of-tokens] "Returns a game that allows number-of-tokens to be taken on one turn.")
   (get-remaining-tokens [this] "Returns the number of tokens remaining to be played in this game.")
   (set-remaining-tokens [this number-of-tokens] "Returns a game that has number-of-tokens remaining to be played.")
+  (get-max-tokens-to-take-this-turn [this] "Returns maximum number of tokens that player may take for the current turn. This number will be less than get-max-tokens-to-take towards the end of the game when there are less than get-max-tokens-to-take remaining on the board.")
   (get-next-player [this] "Returns the player whose turn it is to play in this game.")
   (get-next-player-name [this] "Returns the string name of the player whose turn it is to play in this game.")
   (set-next-player [this player] "Returns a game with player set to take the next turn.")
+  (get-opponent [this] "Returns the player who will play after next-player.")
   (increment-next-turn-taker [this] "Returns a game with the next-player advanced to the next player in the seq to take a turn.")
   (completed? [this] "Returns true when game as reached the end state.")
   (valid-player? [this player] "Returns true if player is in the list of known players.")
@@ -54,10 +58,12 @@
   (set-max-tokens-to-take [this new-max-tokens-to-take] (Game. players turn-taking-sequence new-max-tokens-to-take remaining-tokens next-player))
   (get-remaining-tokens [this] remaining-tokens)
   (set-remaining-tokens [this new-remaining-tokens] (Game. players turn-taking-sequence max-tokens-to-take new-remaining-tokens next-player))
+  (get-max-tokens-to-take-this-turn [this] (min remaining-tokens max-tokens-to-take))
   (get-next-player [this] next-player)
   (set-next-player [this new-next-player] (Game. players turn-taking-sequence max-tokens-to-take remaining-tokens new-next-player))
   (get-next-player-name [this] (players next-player))
-  (increment-next-turn-taker [this] (set-next-player this (get-next-item next-player turn-taking-sequence)))
+  (get-opponent [this] (get-next-item next-player turn-taking-sequence))
+  (increment-next-turn-taker [this] (set-next-player this (get-opponent this)))
   (completed? [this] (== 0 remaining-tokens))
   (valid-player? [this player] (some (hash-set player) turn-taking-sequence))
   (valid-game? [this] (and (< 0 max-tokens-to-take)
