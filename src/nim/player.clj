@@ -130,4 +130,6 @@
 
 (defn auto-take-turn [game]
   "Returns a game after taking a turn for the current player."
-  (take-turn game (calculate-tokens-to-take turn-taker-strategy game)))
+  (if (== 0 (get-remaining-tokens game))
+    game ;; already completed
+    (take-turn game (calculate-tokens-to-take turn-taker-strategy game))))
