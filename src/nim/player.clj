@@ -45,12 +45,14 @@
          (/ (float winning-descendants) (float (+ winning-descendants losing-descendants))))))
 
 (defn count-descendants
-  "Sums total number of winning descendants across all nodes."
+  "Sums total number of winning or losing descendants across all nodes."
   [descendant-accessor all-nodes]
   (reduce + (map (fn [node] (descendant-accessor node)) all-nodes)))
 
 (def expand-decision-node)
 
+;; Builds a node for each of the possible choices,
+;; then recursively calls expand-decision-node.
 (defn expand-possible-choices
   "Returns list of decision nodes, one for each possible choice."
   [starting-player max-tokens-to-take player opponent remaining-tokens possible-token-choices]
@@ -62,6 +64,10 @@
       (DecisionNode. player opponent remaining-tokens n 0 0)))
    possible-token-choices))
 
+;; Counts winning and losing descendants.
+;; In case where this is not a leaf node, makes recursive call
+;; to expand-possible-choices for all of the possible choices
+;; that exist from this point in the game.
 (defn expand-decision-node
   "Returns node that has been searched to determine numbers of winning descendants and losing descendants."
   [starting-player max-tokens-to-take node]
@@ -78,6 +84,7 @@
            (set-winning-descendants node (count-descendants :winning-descendants child-nodes))
            (count-descendants :losing-descendants child-nodes)))))
 
+;; Convenience function to get the recursion started.
 (defn build-decision-tree
   "Returns list of possible moves, where each move is an exhaustive decision tree of all possible moves, starting from current game position"
   [game possible-token-choices]
