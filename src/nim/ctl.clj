@@ -9,15 +9,15 @@
 ;;   (machine-takes-turn)
 
 ;; Global holds the current state of the game between turns.
-(def persisted-game (reset-game))
+(def *persisted-game* (reset-game))
 
 (defn rules []
   (str "This game is called Nim. "
        "There are "
-       (get-remaining-tokens persisted-game)
+       (get-remaining-tokens *persisted-game*)
        " tokens currently on the board. "
        "You may take [1.."
-       (get-max-tokens-to-take persisted-game)
+       (get-max-tokens-to-take *persisted-game*)
        "] tokens at each turn. "
        "The player who takes the last token wins the game. "
        \newline
@@ -37,38 +37,39 @@
 (defn start-game
   "Initializes game, so that user can start playing, returning a displayable string of instructions to continue playing the game."
   []
-  (def persisted-game (reset-game))
-  (str (rules)
-       \newline \newline
-       (turn-notification persisted-game)))
+  (let [game (reset-game)]
+    (def *persisted-game* game)
+    (str (rules)
+         \newline \newline
+         (turn-notification game))))
 
 (defn take-tokens
   "Removes the number-of-tokens from the game board, returning a displayable string description of the game state."
   [number-of-tokens]
-  (let [played-game (take-turn persisted-game number-of-tokens)]
+  (let [played-game (take-turn *persisted-game* number-of-tokens)]
     (cond (nil? played-game) (str "Illegal move")
-          :else (do (def persisted-game played-game)
+          :else (do (def *persisted-game* played-game)
                     (str "You removed "
                          number-of-tokens
                          " tokens."
                          " There are "
-                         (get-remaining-tokens persisted-game)
+                         (get-remaining-tokens played-game)
                          " tokens remaining. "
-                         (turn-notification persisted-game))))))
+                         (turn-notification played-game))))))
 
 (defn machine-takes-turn
   "Calculates a move and removes tokens from the game board, returning a displayable string description of the game state."
   []
-  (let [previous-tokens (get-remaining-tokens persisted-game)
-        played-game (auto-take-turn persisted-game)]
-    (def persisted-game played-game)
+  (let [previous-tokens (get-remaining-tokens *persisted-game*)
+        played-game (auto-take-turn *persisted-game*)]
+    (def *persisted-game* played-game)
     (str "I took "
-         (- previous-tokens (get-remaining-tokens persisted-game))
+         (- previous-tokens (get-remaining-tokens played-game))
          " tokens."
          " There are "
-         (get-remaining-tokens persisted-game)
+         (get-remaining-tokens played-game)
          " tokens remaining. "
-         (turn-notification persisted-game))))
+         (turn-notification played-game))))
 
 (defn help []
   (str "(start-game) ;Initializes board to default preferences. "
