@@ -9,7 +9,7 @@
 ;;   (machine-takes-turn)
 
 ;; Global holds the current state of the game between turns.
-(def *persisted-game* (reset-game))
+(def ^:dynamic *persisted-game* (reset-game))
 
 (defn rules []
   (str "This game is called Nim. "
@@ -38,7 +38,7 @@
   "Initializes game, so that user can start playing, returning a displayable string of instructions to continue playing the game."
   []
   (let [game (reset-game)]
-    (def *persisted-game* game)
+    (def ^:dynamic *persisted-game* game)
     (str (rules)
          \newline \newline
          (turn-notification game))))
@@ -48,7 +48,7 @@
   [number-of-tokens]
   (let [played-game (take-turn *persisted-game* number-of-tokens)]
     (cond (nil? played-game) (str "Illegal move")
-          :else (do (def *persisted-game* played-game)
+          :else (do (def ^:dynamic *persisted-game* played-game)
                     (str "You removed "
                          number-of-tokens
                          " tokens."
@@ -62,7 +62,7 @@
   []
   (let [previous-tokens (get-remaining-tokens *persisted-game*)
         played-game (auto-take-turn *persisted-game*)]
-    (def *persisted-game* played-game)
+    (def ^:dynamic *persisted-game* played-game)
     (str "I took "
          (- previous-tokens (get-remaining-tokens played-game))
          " tokens."
@@ -77,4 +77,3 @@
        "(take-tokens number-of-tokens) ;Player takes a turn by taking number-of-tokens. "
        \newline
        "(machine-takes-turn) ;The application makes a choice for the current turn."))
-

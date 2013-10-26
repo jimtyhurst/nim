@@ -86,7 +86,7 @@
 
 ;; Convenience function to get the recursion started.
 (defn build-decision-tree
-  "Returns list of possible moves, where each move is an exhaustive decision tree of all possible moves, starting from current game position"
+  "Returns list of possible moves, where each move is derived from an exhaustive decision tree of all possible moves, starting from current game position."
   [game possible-token-choices]
   (expand-possible-choices
    (get-next-player game)
